@@ -1,0 +1,19 @@
+<?php
+$_product = Mage::registry('current_product');
+$sku = '';
+if ($_product && $_product->getId()) {
+    $sku = $_product->getSku();
+}
+?>
+<!-- Criteo Product dataLayer -->
+<script type='text/javascript'>
+    var dataLayer = window.dataLayer || [];
+    dataLayer.push({
+        'event': 'crto_productpage',
+        crto: {
+            'email': '<?php echo Mage::helper('vs7_criteo')->getCustomerEmail();?>',
+            'products': ['<?php echo $sku;?>']
+        }
+    });
+</script>
+<!-- END Criteo Product dataLayer -->

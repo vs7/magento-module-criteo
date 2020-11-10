@@ -1,0 +1,11 @@
+<!-- Criteo Homepage dataLayer -->
+<script type='text/javascript'>
+    var dataLayer = window.dataLayer || [];
+    dataLayer.push({
+        'event': 'crto_homepage',
+        crto: {
+            'email': '<?php echo Mage::helper('vs7_criteo')->getCustomerEmail();?>'
+        }
+    });
+</script>
+<!-- END Criteo Homepage dataLayer -->

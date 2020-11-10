@@ -1,0 +1,16 @@
+<?php
+$order=$this->getOrder();
+?>
+<!-- Criteo Sales dataLayer -->
+<script type='text/javascript'>
+    var dataLayer = dataLayer || [];
+    dataLayer.push({
+        'event': 'crto_transactionpage',
+        crto: {
+            'email': '<?php echo Mage::helper('vs7_criteo')->getCustomerEmail();?>',
+            'transactionid': '<?php echo $order->getIncrementId();?>',
+            'products': <?php echo $this->getItemsJSON();?>
+        }
+    });
+</script>
+<!-- END Criteo Sales dataLayer -->

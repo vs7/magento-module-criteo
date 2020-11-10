@@ -1,0 +1,60 @@
+<script>
+    var vs7 = vs7 || [];
+
+    (function ($, window, document, undefined) {
+        vs7.criteo = [];
+
+        vs7.criteo.findItemIndex = function (id, array) {
+            for (var i = 0; i < array.length; i++) {
+                if (array[i].id == id) return i;
+            }
+        };
+
+        vs7.criteo.viewItemList = function (block) {
+            var blockSchema = block.querySelector('script[type="application/ld+json"]');
+            if (blockSchema === null) {
+                return;
+            }
+            var jsonld = JSON.parse(blockSchema.innerText),
+                items = [],
+                itemId,
+                itemIndex;
+
+            $(block).find('.item').each(function () {
+                itemId = $(this).data('itemid');
+                if (itemId && $(this).is(":visible")) {
+                    itemIndex = findItemIndex(itemId, jsonld.itemListElement);
+                    var id = jsonld.itemListElement[itemIndex].sku;
+                    items.push(id);
+                }
+            });
+
+            if (items.length > 0) {
+                var dataLayer = window.dataLayer || [];
+                dataLayer.push({
+                    'event': 'crto_listingpage',
+                    crto: {
+                        'email': '<?php echo Mage::helper('vs7_criteo')->getCustomerEmail();?>',
+                        'products': items
+                    }
+                });
+            }
+        };
+
+        $(document).ready(function () {
+            $('.products-grid, .products-list, #compare-items, #wishlist-sidebar, #recently-viewed-items, .carousel-collection, .carousel-similar, .carousel-best').each(function () {
+                if ($(this).is(":visible")) {
+                    vs7.criteo.viewItemList(this);
+                }
+            });
+
+            document.observe('vs7:listVisible', function(event) {
+                $('.products-grid').each(function () {
+                    if ($(this).is(":visible")) {
+                        vs7.criteo.viewItemList(this);
+                    }
+                });
+            });
+        });
+    }(jQuery, window, document));
+</script>

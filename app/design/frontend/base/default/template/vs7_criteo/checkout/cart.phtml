@@ -1,0 +1,12 @@
+<!-- Criteo Basket/Cart dataLayer -->
+<script type='text/javascript'>
+    var dataLayer = dataLayer || [];
+    dataLayer.push({
+        'event': 'crto_basketpage',
+        crto: {
+            'email': '<?php echo Mage::helper('vs7_criteo')->getCustomerEmail();?>',
+            'products': <?php echo $this->getItemsJSON();?>
+        }
+    });
+</script>
+<!-- END Criteo Basket/Cart dataLayer -->
